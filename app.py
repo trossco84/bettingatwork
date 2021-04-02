@@ -115,7 +115,7 @@ app.layout = html.Div(
                     className="four columns div-user-controls",
                     children=[
                         html.Img(className="logo", src="https://raw.githubusercontent.com/trossco84/TrevorRoss/master/Sports%20Science/logo2.jpg"),
-                        html.H2("Agent Dashboard for Betting at Work"),
+                        html.H2("Financial Dashboard for Betting at Work"),
                         html.Div(
                             className="div-for-dropdown",
                             children=[
