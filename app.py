@@ -22,8 +22,8 @@ import plotly.express as px
 
 
 #create data
-totals = pd.read_csv('https://raw.githubusercontent.com/trossco84/bettingatwork/main/agent_totals.csv?token=ANKCCE2UHDJCDBRNTHLSCTDAM5E6A')
-raws = pd.read_csv('https://raw.githubusercontent.com/trossco84/bettingatwork/main/raw_archives.csv?token=ANKCCE2Z3IUW73APFJ7J6T3AM5E36')
+totals = pd.read_csv('https://raw.githubusercontent.com/trossco84/bettingatwork/main/agent_totals.csv')
+raws = pd.read_csv('https://raw.githubusercontent.com/trossco84/bettingatwork/main/raw_archives.csv')
 last_week = raws.Week.max()
 lw_data = raws[raws.Week == last_week]
 raw2 = raws.copy()
@@ -40,7 +40,7 @@ g2['Number of Players'][0:4] = [5,17,10,14]
 totalrevenue = "${:,.2f}".format(g2.iloc[-1].Revenue)
 bestweek = "${:,.2f}".format(g2['Final Balance'].max())
 worstweek = "${:,.2f}".format(g2['Final Balance'].min())
-totalfees = pd.read_csv('https://raw.githubusercontent.com/trossco84/bettingatwork/main/totalfees.txt?token=ANKCCE3IBX4RTD3QSBHBH7LAM5FAA').columns[0]
+totalfees = pd.read_csv('https://raw.githubusercontent.com/trossco84/bettingatwork/main/totalfees.txt').columns[0]
 fees = int(totalfees)
 profit = g2.iloc[-1].Revenue - fees
 total_profit = "${:,.2f}".format(profit)
@@ -114,7 +114,7 @@ app.layout = html.Div(
                 html.Div(
                     className="four columns div-user-controls",
                     children=[
-                        html.Img(className="logo", src="https://raw.githubusercontent.com/trossco84/bettingatwork/main/assets/logo2.jpg?token=ANKCCE7FDCKTMUEVKVX4S4DAM5FOC"),
+                        html.Img(className="logo", src="https://raw.githubusercontent.com/trossco84/bettingatwork/main/assets/logo2.jpg"),
                         html.H2("Financial Dashboard for Betting at Work"),
                         html.Div(
                             className="div-for-dropdown",
