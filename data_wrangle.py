@@ -1,6 +1,7 @@
 import numpy as np
 import pandas as pd
 import seaborn as sns
+import matplotlib.pyplot as plt
 
 master = pd.read_clipboard()
 pyragt = pd.read_csv('/Users/trevorross/Desktop/My Projects/bettingatwork/players_and_agents.csv')
