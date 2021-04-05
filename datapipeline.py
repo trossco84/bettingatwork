@@ -202,9 +202,8 @@ def process_agents(w2,pyragt):
     #recording the weekly output
     today = datetime.datetime.today() 
     last_monday = today - datetime.timedelta(days=today.weekday(),weeks=1)
-    lm1 = datetime.date(last_monday.year,last_monday.month,last_monday.day)
-    lm_string = str(lm1)
-    weekly_records_df.to_csv(f'/Users/trevorross/Desktop/My Projects/bettingatwork/weekly_outputs/{lm_string}.csv')
+    lm_string = str(last_monday.month) + '_' + str(last_monday.day) + '_' + str(last_monday.year)
+    weekly_records_df.to_csv(f'/Users/trevorross/Desktop/My Projects/bettingatwork/weekly_outputs/{lm_string}')
 
     update_master(weekly_records_df,last_monday)
 
