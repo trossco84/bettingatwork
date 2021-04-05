@@ -67,7 +67,7 @@ def update_master(weekly_records,lm):
     # wr3['Week'] = ls1.date()
     # raw10 = raw9.append(wr3,ignore_index=True)
     # raw10.to_csv()
-    master_analysis.process_new_week(weekly_records,lm)
+    master_analysis.process_new_week(lm)
     rd = pd.read_csv('/Users/trevorross/Desktop/My Projects/TrevorRoss/Sports Science/betatwork/raw_archives.csv')
     master_analysis.create_totals(rd)
 
@@ -202,10 +202,10 @@ def process_agents(w2,pyragt):
     #recording the weekly output
     today = datetime.datetime.today() 
     last_monday = today - datetime.timedelta(days=today.weekday(),weeks=1)
-    lm_string = str(last_monday.month) + '_' + str(last_monday.day) + '_' + str(last_monday.year)
-    weekly_records_df.to_csv(f'/Users/trevorross/Desktop/My Projects/bettingatwork/weekly_outputs/{lm_string}')
+    lm_string = str(last_monday.date())
+    weekly_records_df.to_csv(f'/Users/trevorross/Desktop/My Projects/bettingatwork/weekly_outputs/{lm_string}.csv')
 
-    update_master(weekly_records_df,last_monday)
+    update_master(weekly_records_df,lm_string)
 
     print()
     print('Christian:')

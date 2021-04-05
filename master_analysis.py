@@ -3,12 +3,12 @@ import numpy as np
 import datetime
 
 
-def process_new_week(weekdf,week_string):
+def process_new_week(week_string):
 
     raw_data = pd.read_csv('/Users/trevorross/Desktop/My Projects/bettingatwork/raw_archives.csv')
     r2=raw_data.copy()
 
-    nw2 = weekdf.copy()
+    nw2 = pd.read_csv(f'/Users/trevorross/Desktop/My Projects/bettingatwork/weekly_outputs/{week_string}.csv')
     
     #processing
     nw2['Amts'] = np.where(nw2['Action']=='Pay',nw2['Amount']*-1,nw2['Amount'])
@@ -22,8 +22,7 @@ def process_new_week(weekdf,week_string):
     nw3['Final Balance'] = sum(nw3['Expected Balance'])/4
 
     #adding the week
-    ws2 = week_string.split("_")
-    nw3['Week'] = datetime.date(year=int(ws2[2]),month=int(ws2[0]),day=int(ws2[1]))
+    nw3['Week'] = week_string
 
     #updating raw archives
     r3 = r2.append(nw3,ignore_index=True)
