@@ -35,7 +35,7 @@ overall = totals.reset_index()
 #growth
 growth = raw2[['Week',"Number of Players","Final Balance"]]
 g2 = growth.groupby('Week').sum().reset_index()
-g2['Revenue'] = [g2.iloc[:x]['Final Balance'].sum() for x in g2.index]
+g2['Revenue'] = [g2.iloc[:x+1]['Final Balance'].sum() for x in g2.index]
 g2['Number of Players'][0:4] = [5,17,10,14]
 totalrevenue = "${:,.2f}".format(g2.iloc[-1].Revenue)
 bestweek = "${:,.2f}".format(g2['Final Balance'].max())
