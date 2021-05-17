@@ -18,7 +18,6 @@
     #new mac: command + ctrl + shift + 4
     #windows: windows button + shift + s
 #
-
 import numpy as np
 import pandas as pd
 import warnings
@@ -72,7 +71,7 @@ def update_master(weekly_records,lm):
     num_players['Number of Players'] = num_players.Agent
     num_players.drop(['Agent'],axis=1,inplace=True)
     nw3 = nw3.set_index('Agent').join(num_players).reset_index()
-    nw3['Final Balance'] = sum(nw3['Expected Balance'])/4
+    nw3['Final Balance'] = sum(nw3['Expected Balance'])/len(nw3)
 
     #adding the week
     nw3['Week'] = week_string
@@ -249,19 +248,20 @@ def process_totals(w4):
 
 def inter_bookie(tdf):
     tdf['Demand'] = [tdf.iloc[x]['Final Balance']-tdf.iloc[x].Amount for x in tdf.reset_index().index]
+    na = len(tdf) - 1
     td2 = tdf.sort_values('Demand')
     while td2.Demand.any() != 0.0:
-        if abs(td2.iloc[0,3]) > abs(td2.iloc[3,3]):
-            amt = abs(td2.iloc[3,3])
-            print(f'{td2.index[0]} pays {td2.index[3]} {amt}')
+        if abs(td2.iloc[0,3]) > abs(td2.iloc[na,3]):
+            amt = abs(td2.iloc[na,3])
+            print(f'{td2.index[0]} pays {td2.index[na]} {amt}')
             td2.iloc[0,3] = td2.iloc[0,3] + amt
-            td2.iloc[3,3] = td2.iloc[3,3] - amt
+            td2.iloc[na,3] = td2.iloc[na,3] - amt
             td2 = td2.sort_values('Demand')
         else:
             amt = abs(td2.iloc[0,3])
-            print(f'{td2.index[0]} pays {td2.index[3]} {amt}')
+            print(f'{td2.index[0]} pays {td2.index[na]} {amt}')
             td2.iloc[0,3] = td2.iloc[0,3] + amt
-            td2.iloc[3,3] = td2.iloc[3,3] - amt
+            td2.iloc[na,3] = td2.iloc[na,3] - amt
             td2 = td2.sort_values('Demand')
         
         if ((td2.Demand< 1.0).all()):
@@ -280,7 +280,6 @@ def weekly_processing(weekly_data,pyragt):
     totalsdf = process_totals(w4)
     print()
     inter_bookie(totalsdf)
-
 
 if __name__ == "__main__":
     weekly_processing(this_week,pyragt)
