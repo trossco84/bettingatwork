@@ -56,20 +56,40 @@ def update_pyragt(w3, pyragt):
     return w3, pyragt
 
 def update_master(weekly_records,lm):
-    # wr1 = weekly_records.copy()
-    # ls1 = lm
-    # wr1['Amt'] = [wr1.loc[x].Amount if wr1.loc[x].Action == "Request" else (wr1.loc[x].Amount*(-1)) for x in wr1.index]
-    # raw9 = pd.read_csv('/Users/trevorross/Desktop/My Projects/TrevorRoss/Sports Science/betatwork/raw_archives.csv')
-    # wr1 = wr1.groupby('Agent').sum().drop(['Amount'],axis=1).rename(columns={'Amt':'Expected Balance'})
-    # wr1['Final Balance'] = wr1['Expected Balance'].sum()/4
-    # wr2 = pd.DataFrame(wr1.Agent.value_counts()).rename(columns={'Agent':'Number of Players'})
-    # wr3 = wr2.join(wr1).reset_index().rename(columns={'index':'Agent'})
-    # wr3['Week'] = ls1.date()
-    # raw10 = raw9.append(wr3,ignore_index=True)
-    # raw10.to_csv()
-    master_analysis.process_new_week(lm)
-    rd = pd.read_csv('/Users/trevorross/Desktop/My Projects/TrevorRoss/Sports Science/betatwork/raw_archives.csv')
-    master_analysis.create_totals(rd)
+    # master_analysis.process_new_week(lm)
+    week_string = lm
+    raw_data = pd.read_csv('/Users/trevorross/Desktop/My Projects/bettingatwork/raw_archives.csv')
+    r2=raw_data.copy()
+
+    nw2 = pd.read_csv(f'/Users/trevorross/Desktop/My Projects/bettingatwork/weekly_outputs/{week_string}.csv')
+    
+    #processing
+    nw2['Amts'] = np.where(nw2['Action']=='Pay',nw2['Amount']*-1,nw2['Amount'])
+    nw3 = nw2.groupby('Agent').sum().reset_index().drop(['Amount'],axis=1)
+    nw3['Expected Balance'] = nw3.Amts
+    nw3.drop(['Amts'],axis=1,inplace=True)
+    num_players = pd.DataFrame(nw2.Agent.value_counts())
+    num_players['Number of Players'] = num_players.Agent
+    num_players.drop(['Agent'],axis=1,inplace=True)
+    nw3 = nw3.set_index('Agent').join(num_players).reset_index()
+    nw3['Final Balance'] = sum(nw3['Expected Balance'])/4
+
+    #adding the week
+    nw3['Week'] = week_string
+
+    #updating raw archives
+    r3 = r2.append(nw3,ignore_index=True)
+    r3.to_csv('/Users/trevorross/Desktop/My Projects/bettingatwork/raw_archives.csv',index=False)
+    
+    raw_data = r3.copy()
+    rgroup = raw_data.groupby('Agent').sum()
+    numweeks = len(raw_data.Week.unique())
+    rgroup = rgroup.rename(columns={'Expected Balance':'Total Revenue'})
+    tots = rgroup[['Total Revenue']]
+    tots['Avg Players per Week'] = rgroup['Number of Players']/numweeks
+    tots['Avg Revenue per Week'] = tots['Total Revenue']/numweeks
+    tots.to_csv('/Users/trevorross/Desktop/My Projects/bettingatwork/agent_totals.csv')
+
 
 
 
@@ -244,7 +264,7 @@ def inter_bookie(tdf):
             td2.iloc[3,3] = td2.iloc[3,3] - amt
             td2 = td2.sort_values('Demand')
         
-        if td2.Demand.all() < 1.0:
+        if ((td2.Demand< 1.0).all()):
             break
 
 
