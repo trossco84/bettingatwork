@@ -17,7 +17,7 @@
     #old mac: command + shift + 4
     #new mac: command + ctrl + shift + 4
     #windows: windows button + shift + s
-    #the goal is for this to eventually become an automated email
+#
 
 import numpy as np
 import pandas as pd
@@ -243,6 +243,9 @@ def inter_bookie(tdf):
             td2.iloc[0,3] = td2.iloc[0,3] + amt
             td2.iloc[3,3] = td2.iloc[3,3] - amt
             td2 = td2.sort_values('Demand')
+        
+        if td2.Demand.all() < 1.0:
+            break
 
 
 def weekly_processing(weekly_data,pyragt):
