@@ -1,4 +1,4 @@
-###INSTRUCTIONS####
+### INSTRUCTIONS ####
 
 # Pregame
 #1. Login to Red.ag and go to Figures -> Weekly Balance -> Specified Week
@@ -7,33 +7,45 @@
 #3. copy with whatever method you like (ctrl/cmd + c)
 
 # Pressing Play
-#4a. RUNS SELECTION IN JUPYTER NOTEBOOK: Highlight all of this test and press play or shift + enter 
+#4a. RUNS SELECTION IN JUPYTER NOTEBOOK: Press play in the top right
 #4b. RUNS SELECTION IN TERMINAL: 
 #      i) navigate to this folder (cd folder path)
 #      ii) run the app (python3 datapipeline.py)
 
 # Postgame
-#5 Screenshot important areas and send to intended parties
+#5. open backup_data_storage excel file, create a new sheet and paste (ctrl/cmd + p)
+    # format as needed
+#6. Screenshot important areas and send to intended parties
     #old mac: command + shift + 4
     #new mac: command + ctrl + shift + 4
     #windows: windows button + shift + s
-#
+
+
+### DATA PIPELINE CODE ###
+#Import Packages
+##libraries
 import numpy as np
 import pandas as pd
 import warnings
 import datetime
+##additional code
 import master_analysis
+
+#Change Default Settings
 warnings.filterwarnings("ignore", category=FutureWarning)
 pd.options.mode.chained_assignment = None
+
+#Retrieve Data
 this_week = pd.read_clipboard()
 pyragt = pd.read_csv('/Users/trevorross/Desktop/My Projects/bettingatwork/players_and_agents.csv')
 
-#kevin's balance
+# kevin's balance
 with open("/Users/trevorross/Desktop/My Projects/bettingatwork/kevin.txt") as f:
     kbal = f.readlines()
 kbal = kbal[0]
 kbal = float(kbal)
 
+# function to update agent and player data
 def update_pyragt(w3, pyragt):
     nones = w3[w3.Agent == "None"]
     
@@ -54,6 +66,7 @@ def update_pyragt(w3, pyragt):
     
     return w3, pyragt
 
+# function to add new data to master data file (raw_archives)
 def update_master(weekly_records,lm):
     # master_analysis.process_new_week(lm)
     week_string = lm
@@ -90,10 +103,7 @@ def update_master(weekly_records,lm):
     tots.to_csv('/Users/trevorross/Desktop/My Projects/bettingatwork/agent_totals.csv')
 
 
-
-
-
-
+# question logic for adding non-book slips
 def any_slips(w2):
     any_more='y'
     while any_more not in ['no',"No","NO","N","n"]:
@@ -105,6 +115,7 @@ def any_slips(w2):
         any_more = input('any more slips?')
     return w2
 
+# function to add or adjust player amounts after week close
 def adjust_amounts(w2):
     w2.set_index('Player',inplace=True)
 
@@ -140,6 +151,7 @@ def adjust_amounts(w2):
     w2.reset_index(inplace=True)
     return w2
 
+# function to initiate the agent updating process
 def agent_updates(w3,agents):
     no = ['no',"No","NO","N","n"]
     yes = ['Yes','yes','Y','y',"YES"]
@@ -166,6 +178,7 @@ def agent_updates(w3,agents):
 
     return pyr2,agents
 
+# bulk function that injects new data into existing data and processes agent specific tasks
 def process_agents(w2,pyragt):
     w3 = w2.copy()
     pyragt.set_index('Player',inplace=True)
@@ -186,7 +199,7 @@ def process_agents(w2,pyragt):
         w3, pyragt = update_pyragt(w3, pyragt)
 
     #christian logic
-    c_accts = ['pyr118','pyr123']
+    c_accts = ['pyr118','pyr123','pyr121','pyr130']
     c_bal = 0
     if set(list(w3.Player)).isdisjoint(set(c_accts)) == False:
         for acct in c_accts:
@@ -233,6 +246,7 @@ def process_agents(w2,pyragt):
 
     return w4,pyragt
         
+# function to create totals and values for output
 def process_totals(w4):
     w5 = w4.copy()
     w5['Amount'] = np.where(w5['Action']=='Pay',w5['Amount']*-1,w5['Amount'])
@@ -245,12 +259,12 @@ def process_totals(w4):
     print(tdf)
     return tdf
 
-
+#function to determine settlement transactions amongst agents
 def inter_bookie(tdf):
     tdf['Demand'] = [tdf.iloc[x]['Final Balance']-tdf.iloc[x].Amount for x in tdf.reset_index().index]
     na = len(tdf) - 1
     td2 = tdf.sort_values('Demand')
-    while td2.Demand.any() != 0.0:
+    while td2.Demand.any() >= 0.1:
         if abs(td2.iloc[0,3]) > abs(td2.iloc[na,3]):
             amt = abs(td2.iloc[na,3])
             print(f'{td2.index[0]} pays {td2.index[na]} {amt}')
@@ -267,7 +281,7 @@ def inter_bookie(tdf):
         if ((td2.Demand< 1.0).all()):
             break
 
-
+#Process Runner
 def weekly_processing(weekly_data,pyragt):
     w2 = weekly_data[['Player','Name','Weekly']]
     if type(w2.Weekly[0]) == type('yo!'):
@@ -281,6 +295,7 @@ def weekly_processing(weekly_data,pyragt):
     print()
     inter_bookie(totalsdf)
 
+#Code Starter
 if __name__ == "__main__":
     weekly_processing(this_week,pyragt)
 

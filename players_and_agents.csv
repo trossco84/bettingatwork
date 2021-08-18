@@ -1,5 +1,5 @@
 Player,Name,Agent
-pyr101,DEMO,Agent
+pyr101,DEMO,None
 pyr102,James Mendel,Gabe
 pyr103,Jalen,Trev
 pyr104,Eric,Gabe
@@ -10,32 +10,32 @@ pyr108,Andres Rojas,Dro
 pyr109,Kevin Victory,Orso
 pyr110,Brando,Gabe
 pyr111,David Haller,Dro
-pyr112,Tara Account 1,Trev
-pyr113,Mckee,Orso
+pyr112,OPEN,None
+pyr113,OPEN,None
 pyr114,Kyle Beta,Orso
 pyr115,Tim,Gabe
 pyr116,stew,Trev
-pyr117,Peyton Shapiro,Trev
+pyr117,OPEN,None
 pyr118,Christian #1,Orso
 pyr119,Zane,Gabe
 pyr120,Garett Pool,Gabe
-pyr121,Rob Rojas,Dro
-pyr122,Andres Ruenes,Dro
+pyr121,Christian #4,Orso
+pyr122,OPEN,None
 pyr123,Christian #2,Orso
-pyr124,Bolivia,Trev
+pyr124,OPEN,None
 pyr125,Casey Grieves,Trev
-pyr126,Sergio,Dro
+pyr126,OPEN,None
 pyr127,Will R,Orso
-pyr128,Dozer,Orso
+pyr128,OPEN,None
 pyr129,Wagner,Trev
-pyr130,Tag,Dro
-pyr131,Alejandro,Dro
-pyr132,Gz,Orso
+pyr130,Christian # 3,Orso
+pyr131,OPEN,None
+pyr132,OPEN,None
 pyr133,ben,Trev
 pyr134,Kevin,Gabe
 pyr135,Alex,Gabe
 pyr136,Mark,Gabe
 pyr137,Zach gartner,Gabe
 pyr138,OPEN,None
-pyr139,Howar,Dro
-pyr140,Gannon,Gabe
+pyr139,Howard,Dro
+pyr140,Pat,Gabe
