@@ -199,11 +199,13 @@ def process_agents(w2,pyragt):
         w3, pyragt = update_pyragt(w3, pyragt)
 
     #christian logic
+    all_5 = 0
     c_accts = ['pyr118','pyr123','pyr121','pyr122','pyr130']
     c_bal = 0
     if set(list(w3.Player)).isdisjoint(set(c_accts)) == False:
         for acct in c_accts:
             if acct in list(w3.Player):
+                all_5 = all_5+1
                 weekly = w3.set_index('Player').loc[acct].Weekly
                 if weekly < 0:
                     add = weekly * 0.1
@@ -212,6 +214,13 @@ def process_agents(w2,pyragt):
     c_bal = int(abs(c_bal))
     if c_bal%4 >1:
         c_bal = c_bal + 1
+    
+    c_weekly = w3.set_index('Player').loc['pyr107'].Weekly
+    if all_5 == 5:
+        if c_weekly<0:
+            c_giveback = c_weekly*.1
+
+    c_bal =c_bal+c_giveback
     c_logic = f'we each pay christian {int(c_bal/4)}'
 
     #adding an action column
