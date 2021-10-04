@@ -184,19 +184,29 @@ def process_agents(w2,pyragt):
     pyragt.set_index('Player',inplace=True)
 
     #matching agents to their players
+    extra_players = list(set(w3.Player) - set(pyragt.index))
+    if len(extra_players)>=1:
+        pyragt.reset_index(inplace=True)
+        for newguy in extra_players:
+            pyragt.loc[len(pyragt.index)] = [newguy,"newname","newagent"]
+        pyragt.set_index('Player',inplace=True)
+    
     w3['Agent'] = [pyragt.loc[x].Agent for x in w3.Player]
     agents = w3.Agent.unique()
-    w3.fillna("None",inplace=True)   
+    w3.fillna("None",inplace=True)  
+    
+    #updating player agent list if there is a new account
+    if "None" in agents:
+        w3, pyragt = update_pyragt(w3, pyragt)
+
+    if "newagent" in agents:
+        w3, pyragt = update_pyragt(w3, pyragt)
 
     #agent updates
     acheck = input('any agent updates?')
     yes = ['Yes','yes','Y','y',"YES"]
     if acheck in yes:
         pyragt,agents = agent_updates(w3,agents)
-    
-    #updating player agent list if there is a new account
-    if "None" in agents:
-        w3, pyragt = update_pyragt(w3, pyragt)
 
     #christian logic
     all_5 = 0
@@ -211,17 +221,23 @@ def process_agents(w2,pyragt):
                     add = weekly * 0.1
                     c_bal = c_bal+add
 
-    c_bal = int(abs(c_bal))
-    if c_bal%4 >1:
-        c_bal = c_bal + 1
+
+    c_bal2 = int(abs(c_bal))
+    if c_bal2%4 >1:
+        c_bal2 = c_bal2 + 1
     
     c_weekly = w3.set_index('Player').loc['pyr107'].Weekly
     if all_5 == 5:
         if c_weekly<0:
-            c_giveback = c_weekly*.1
-
-    c_bal =c_bal+c_giveback
-    c_logic = f'we each pay christian {int(c_bal/4)}'
+            c_giveback = -(c_weekly*.1)
+            c_final =c_bal2+c_giveback
+        else:
+            c_giveback=0
+            c_final=c_bal2
+    else:
+        c_final=c_bal2 
+    
+    c_logic = f'we each pay christian ${int(c_final/4)} total, ${int(c_bal2/4)} for kickbacks and ${int(c_giveback/4)} for 5 active players'
 
     #adding an action column
     w3['Action'] = ['Request' if x < 0 else 'Pay' for x in w3.Weekly]
