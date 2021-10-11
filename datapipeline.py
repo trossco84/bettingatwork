@@ -235,7 +235,8 @@ def process_agents(w2,pyragt):
             c_giveback=0
             c_final=c_bal2
     else:
-        c_final=c_bal2 
+        c_final=c_bal2
+        c_giveback=0 
     
     c_logic = f'we each pay christian ${int(c_final/4)} total, ${int(c_bal2/4)} for kickbacks and ${int(c_giveback/4)} for 5 active players'
 
