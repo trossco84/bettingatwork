@@ -24,12 +24,12 @@
 ### DATA PIPELINE CODE ###
 #Import Packages
 ##libraries
-import numpy as np
-import pandas as pd
 import warnings
 import datetime
+import numpy as np
+import pandas as pd
 ##additional code
-import master_analysis
+# import master_analysis
 
 #Change Default Settings
 warnings.filterwarnings("ignore", category=FutureWarning)
@@ -307,9 +307,23 @@ def inter_bookie(tdf):
         if ((td2.Demand< 1.0).all()):
             break
 
+#new site, all action, data translation layer
+def newsite_datatranslation(weekly_balances):
+    allaction_wb = weekly_balances.copy()
+    p_a = pd.read_csv('/Users/trevorross/Desktop/My Projects/sandbox/bettingatwork/players_and_agents.csv')
+    p_dict = p_a[['Player','Name']]
+    
+    red_aa_wb = allaction_wb[['Player','This Week']]
+    red_aa_wb.Player = [pyr.lower() for pyr in red_aa_wb.Player]
+    red_aa_wb.rename(columns={"This Week":"Weekly"},inplace=True)
+    
+    updated_wb = pd.merge(left=red_aa_wb,right=p_dict,how="left",on="Player")
+    return updated_wb
+
 #Process Runner
 def weekly_processing(weekly_data,pyragt):
-    w2 = weekly_data[['Player','Name','Weekly']]
+    wd1_1 = newsite_datatranslation(weekly_data)
+    w2 = wd1_1[['Player','Name','Weekly']]
     if type(w2.Weekly[0]) == type('yo!'):
         w2.Weekly = w2.Weekly.str.replace(',', '').astype(float)
     w2.Player = w2.Player.apply(lambda x: x.lower())
