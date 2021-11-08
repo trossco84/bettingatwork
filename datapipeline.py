@@ -322,7 +322,8 @@ def newsite_datatranslation(weekly_balances):
 
 #Process Runner
 def weekly_processing(weekly_data,pyragt):
-    wd1_1 = newsite_datatranslation(weekly_data)
+    # wd1_1 = newsite_datatranslation(weekly_data)
+    wd1_1 = weekly_data.copy()
     w2 = wd1_1[['Player','Name','Weekly']]
     if type(w2.Weekly[0]) == type('yo!'):
         w2.Weekly = w2.Weekly.str.replace(',', '').astype(float)
