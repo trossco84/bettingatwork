@@ -8,3 +8,7 @@ pyrs[pyrs.Agent=="Orso"][pyrs.Name.str.contains("Chris")]
 
 dataFrame[dataFrame['column name'].str.contains('string')]
 
+pyraccess = pd.read_clipboard()
+
+pa2 = pyraccess.drop_duplicates('Player',keep='last')
+pa2.to_clipboard()

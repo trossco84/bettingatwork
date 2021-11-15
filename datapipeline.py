@@ -313,17 +313,16 @@ def newsite_datatranslation(weekly_balances):
     p_a = pd.read_csv('/Users/trevorross/Desktop/My Projects/sandbox/bettingatwork/players_and_agents.csv')
     p_dict = p_a[['Player','Name']]
     
-    red_aa_wb = allaction_wb[['Player','This Week']]
+    red_aa_wb = allaction_wb[['Player','Balance']]
     red_aa_wb.Player = [pyr.lower() for pyr in red_aa_wb.Player]
-    red_aa_wb.rename(columns={"This Week":"Weekly"},inplace=True)
+    red_aa_wb.rename(columns={"Balance":"Weekly"},inplace=True)
     
     updated_wb = pd.merge(left=red_aa_wb,right=p_dict,how="left",on="Player")
     return updated_wb
 
 #Process Runner
 def weekly_processing(weekly_data,pyragt):
-    # wd1_1 = newsite_datatranslation(weekly_data)
-    wd1_1 = weekly_data.copy()
+    wd1_1 = newsite_datatranslation(weekly_data)
     w2 = wd1_1[['Player','Name','Weekly']]
     if type(w2.Weekly[0]) == type('yo!'):
         w2.Weekly = w2.Weekly.str.replace(',', '').astype(float)
