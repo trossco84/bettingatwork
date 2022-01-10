@@ -223,7 +223,7 @@ def process_agents(w2,pyragt):
 
 
     c_bal2 = int(abs(c_bal))
-    if c_bal2%4 >1:
+    if c_bal2%3 >1:
         c_bal2 = c_bal2 + 1
     
     c_weekly = w3.set_index('Player').loc['pyr107'].Weekly
@@ -238,7 +238,7 @@ def process_agents(w2,pyragt):
         c_final=c_bal2
         c_giveback=0 
     
-    c_logic = f'we each pay christian ${int(c_final/4)} total, ${int(c_bal2/4)} for kickbacks and ${int(c_giveback/4)} for 5 active players'
+    c_logic = f'we each pay christian ${int(c_final/3)} total, ${int(c_bal2/3)} for kickbacks and ${int(c_giveback/3)} for 5 active players'
 
     #adding an action column
     w3['Action'] = ['Request' if x < 0 else 'Pay' for x in w3.Weekly]
@@ -280,7 +280,7 @@ def process_totals(w4):
     pyr_counts = pd.DataFrame(w5.Agent.value_counts())
     pyr_counts.rename(columns={'Agent':"Num. Players"},inplace=True)
     tdf = pyr_counts.join(totals_df)
-    tdf['Final Balance'] = tdf.Amount.sum()/4
+    tdf['Final Balance'] = tdf.Amount.sum()/3
     print("TOTALS:")
     print(tdf)
     return tdf
