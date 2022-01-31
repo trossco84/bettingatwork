@@ -7,13 +7,13 @@
 #3. copy with whatever method you like (ctrl/cmd + c)
 
 # Pressing Play
-#4a. RUNS SELECTION IN JUPYTER NOTEBOOK: Press play in the top right
+#4a. RUNS SELECTION IN JUPYTER NOTEBOOK: Press play in the top right/left depending on IDE
 #4b. RUNS SELECTION IN TERMINAL: 
 #      i) navigate to this folder (cd folder path)
 #      ii) run the app (python3 datapipeline.py)
 
 # Postgame
-#5. open backup_data_storage excel file, create a new sheet and paste (ctrl/cmd + p)
+#5. open backup_data_storage excel file, create a new sheet and paste (ctrl/cmd + p) into cell B4
     # format as needed
 #6. Screenshot important areas and send to intended parties
     #old mac: command + shift + 4
@@ -36,12 +36,16 @@ warnings.filterwarnings("ignore", category=FutureWarning)
 pd.options.mode.chained_assignment = None
 
 #Retrieve Data
+## copying the clipboard (this may be updated in a later version to screen scraped)
 this_week = pd.read_clipboard()
+## reading in the players and agents data table
 pyragt = pd.read_csv('/Users/trevorross/Desktop/My Projects/bettingatwork/players_and_agents.csv')
 
 # kevin's balance
+## opening the file and reading the one line
 with open("/Users/trevorross/Desktop/My Projects/bettingatwork/kevin.txt") as f:
     kbal = f.readlines()
+## retreiving the balance as a number to be used later
 kbal = kbal[0]
 kbal = float(kbal)
 
@@ -293,13 +297,15 @@ def inter_bookie(tdf):
     while td2.Demand.any() >= 0.1:
         if abs(td2.iloc[0,3]) > abs(td2.iloc[na,3]):
             amt = abs(td2.iloc[na,3])
-            print(f'{td2.index[0]} pays {td2.index[na]} {amt}')
+            prntamt = round(amt,2)
+            print(f'{td2.index[0]} pays {td2.index[na]} {prntamt}')
             td2.iloc[0,3] = td2.iloc[0,3] + amt
             td2.iloc[na,3] = td2.iloc[na,3] - amt
             td2 = td2.sort_values('Demand')
         else:
             amt = abs(td2.iloc[0,3])
-            print(f'{td2.index[0]} pays {td2.index[na]} {amt}')
+            prntamt = round(amt,2)
+            print(f'{td2.index[0]} pays {td2.index[na]} {prntamt}')
             td2.iloc[0,3] = td2.iloc[0,3] + amt
             td2.iloc[na,3] = td2.iloc[na,3] - amt
             td2 = td2.sort_values('Demand')

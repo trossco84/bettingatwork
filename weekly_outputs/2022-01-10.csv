@@ -1,8 +1,8 @@
 Agent,Player,Name,Action,Amount
 Gabe,pyr102,James Mendel,Pay,0
-Gabe,pyr103,OPEN,Pay,80
+Gabe,pyr103,Jimmy,Pay,80
 Gabe,pyr104,Eric,Request,224
-Gabe,pyr108,OPEN,Request,55
+Gabe,pyr108,Clark,Request,55
 Gabe,pyr115,Tim,Pay,14
 Gabe,pyr134,Kevin,Request,15
 Gabe,pyr136,Mark,Pay,0
@@ -20,7 +20,7 @@ Trev,pyr141,Luc,Request,475
 Trev,pyr149,ike baldwin,Pay,0
 Orso,pyr107,Christian,Pay,659
 Orso,pyr109,Kevin Victory,Pay,165
-Orso,pyr111,OPEN,Request,30
+Orso,pyr111,RyanVictory,Request,30
 Orso,pyr114,Kyle Beta,Request,223
 Orso,pyr118,Christian #1,Request,105
 Orso,pyr122,Christian #5,Request,25
