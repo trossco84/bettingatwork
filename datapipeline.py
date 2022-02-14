@@ -316,7 +316,7 @@ def inter_bookie(tdf):
 #new site, all action, data translation layer
 def newsite_datatranslation(weekly_balances):
     allaction_wb = weekly_balances.copy()
-    p_a = pd.read_csv('/Users/trevorross/Desktop/My Projects/sandbox/bettingatwork/players_and_agents.csv')
+    p_a = pd.read_csv('/Users/trevorross/Desktop/My Projects/bettingatwork/players_and_agents.csv')
     p_dict = p_a[['Player','Name']]
     
     red_aa_wb = allaction_wb[['Player','Balance']]
