@@ -213,13 +213,13 @@ def process_agents(w2,pyragt):
         pyragt,agents = agent_updates(w3,agents)
 
     #christian logic
-    all_5 = 0
-    c_accts = ['pyr118','pyr123','pyr121','pyr122','pyr130']
+    all_C = 0
+    c_accts = ['pyr118','pyr123','pyr121','pyr122','pyr130','pyr150']
     c_bal = 0
     if set(list(w3.Player)).isdisjoint(set(c_accts)) == False:
         for acct in c_accts:
             if acct in list(w3.Player):
-                all_5 = all_5+1
+                all_C = all_C+1
                 weekly = w3.set_index('Player').loc[acct].Weekly
                 if weekly < 0:
                     add = weekly * 0.1
@@ -231,7 +231,7 @@ def process_agents(w2,pyragt):
         c_bal2 = c_bal2 + 1
     
     c_weekly = w3.set_index('Player').loc['pyr107'].Weekly
-    if all_5 == 5:
+    if all_C >= 5:
         if c_weekly<0:
             c_giveback = -(c_weekly*.1)
             c_final =c_bal2+c_giveback
@@ -242,7 +242,7 @@ def process_agents(w2,pyragt):
         c_final=c_bal2
         c_giveback=0 
     
-    c_logic = f'we each pay christian ${int(c_final/3)} total, ${int(c_bal2/3)} for kickbacks and ${int(c_giveback/3)} for 5 active players'
+    c_logic = f'we each pay christian ${int(c_final/3)} total, ${int(c_bal2/3)} for kickbacks and ${int(c_giveback/3)} for 5+ active players'
 
     #adding an action column
     w3['Action'] = ['Request' if x < 0 else 'Pay' for x in w3.Weekly]
