@@ -244,6 +244,22 @@ def process_agents(w2,pyragt):
     
     c_logic = f'we each pay christian ${int(c_final/3)} total, ${int(c_bal2/3)} for kickbacks and ${int(c_giveback/3)} for 5+ active players'
 
+    #cole/kaufman logic
+    if 'pyr160' in list(w3.Player):
+        k_bal = w3.set_index('Player').loc['pyr160'].Weekly
+        
+        w3.set_index('Player',inplace = True)
+        w3.Weekly.pyr160 = 0
+        w3.reset_index(inplace = True)
+        
+        if k_bal < 0: 
+            k_message = f"cole's guy (kaufman) owes {k_bal}"
+        else:
+            k_message = f"cole's guy (kaufman) is due {k_bal}"
+        
+
+
+
     #adding an action column
     w3['Action'] = ['Request' if x < 0 else 'Pay' for x in w3.Weekly]
     w3['Amount'] = [abs(x) for x in w3.Weekly]
@@ -273,6 +289,8 @@ def process_agents(w2,pyragt):
     print('Christian:')
     print(c_logic)
     print()
+    print("Cole's Clients:")
+    print(k_message)
 
     return w4,pyragt
         
