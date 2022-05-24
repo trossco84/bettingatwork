@@ -8,4 +8,15 @@ pd2.pivot(index=None,columns=['Agent'],values=['Name']).stack().
 pd2.groupby(level=0).first()
 pd2.stack(level=0)
 
-gabe = 
+stupid = pd.read_clipboard()
+
+s2 = stupid.copy()
+
+s2[s2.Player=='pyr160'].Amount = 0
+s2.tail()
+
+s2.loc[s2[s2.Player=='pyr160'],"Amount"]
+
+s2[s2.Player=='pyr160'].Amount
+
+s2.Amount
