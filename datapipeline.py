@@ -230,7 +230,11 @@ def process_agents(w2,pyragt):
     if c_bal2%3 >1:
         c_bal2 = c_bal2 + 1
     
-    c_weekly = w3.set_index('Player').loc['pyr107'].Weekly
+    if 'pyr107' in list(w3.Player):
+        c_weekly = w3.set_index('Player').loc['pyr107'].Weekly
+    else:
+        c_weekly = 0
+        
     if all_C >= 5:
         if c_weekly<0:
             c_giveback = -(c_weekly*.1)
