@@ -17,6 +17,8 @@ pa2.to_clipboard()
 
 player_data = pd.read_csv('/Users/trevorross/Desktop/My Projects/bettingatwork/players_and_agents.csv')
 
+
+
 def retrieve_players(player_data):
     pyrs = player_data.copy()
     trev = [(pyrs.iloc[x].Player,pyrs.iloc[x].Name) for x in pyrs.index if pyrs.iloc[x].Agent == "Trev"]
