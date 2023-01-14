@@ -149,7 +149,7 @@ def adjust_amounts(w2):
             with open("/Users/trevorross/Desktop/My Projects/bettingatwork/kevin.txt",'w') as f:
                 f.write('0')
 
-    #10% kickback for those greater than 1000
+    #10% kickback for those greater than 1500
     w2.Weekly = w2.Weekly.apply(lambda x: x*0.9 if x < -1500 else x)
 
     w2.reset_index(inplace=True)
