@@ -214,7 +214,7 @@ def process_agents(w2,pyragt):
 
     #christian logic
     all_C = 0
-    c_accts = ['pyr118','pyr123','pyr121','pyr122','pyr130','pyr150']
+    c_accts = ['pyr118','pyr123','pyr121','pyr122','pyr130','pyr150','pyr171']
     c_bal = 0
     if set(list(w3.Player)).isdisjoint(set(c_accts)) == False:
         for acct in c_accts:
