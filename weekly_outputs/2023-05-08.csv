@@ -1,0 +1,34 @@
+Agent,Player,Name,Action,Amount
+Gabe,pyr102,James Mendel,Request,298.0
+Gabe,pyr104,Eric,Request,350.0
+Gabe,pyr108,Clark,Request,55.0
+Gabe,pyr112,Schmer,Pay,100.0
+Gabe,pyr113,Rick,Request,25.0
+Gabe,pyr115,Tim,Pay,0.0
+Gabe,pyr124,Brian,Pay,100.0
+Gabe,pyr128,TylerL,Request,806.0
+Gabe,pyr134,Kevin,Request,345.0
+Gabe,pyr135,Alex,Pay,40.0
+Gabe,pyr136,Mark,Pay,143.0
+Gabe,pyr140,Pat,Request,315.0
+Gabe,pyr143,Cary,Request,302.0
+Gabe,pyr155,Tyler,Request,56.0
+Gabe,pyr156,Quentin,Pay,400.0
+Gabe,pyr158,JakeL,Pay,6.0
+Gabe,pyr177,Chris,Pay,1035.0
+Orso,pyr109,Kevin Victory,Request,109.0
+Orso,pyr114,Kyle Beta,Request,162.0
+Orso,pyr118,Christian #1,Pay,21.0
+Orso,pyr121,Christian #4,Request,94.0
+Orso,pyr130,Christian # 3,Request,395.0
+Orso,pyr150,Verlander,Pay,366.0
+Orso,pyr157,Chris,Request,27.0
+Orso,pyr163,Chuck,Pay,32.0
+Orso,pyr168,Bean,Request,30.0
+Orso,pyr169,Sly,Request,1575.0
+Orso,pyr171,Christian #6,Pay,520.0
+Orso,pyr178,Tee,Request,300.0
+Orso,pyr179,Jeff,Pay,100.0
+Trev,pyr110,AdrianSanti,Pay,589.0
+Trev,pyr152,Vic,Request,364.0
+Trev,pyr160,ColesAccount,Pay,0.0
