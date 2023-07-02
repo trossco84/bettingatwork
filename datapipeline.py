@@ -52,7 +52,6 @@ kbal = float(kbal)
 # function to update agent and player data
 def update_pyragt(w3, pyragt):
     nones = w3[w3.Agent == "None"]
-    
     #update pyragt dataframe and csv
     for ind in range(0,len(nones)):
         pyr = nones.iloc[ind].Player
@@ -73,6 +72,7 @@ def update_pyragt(w3, pyragt):
 # function to add new data to master data file (raw_archives)
 def update_master(weekly_records,lm):
     # master_analysis.process_new_week(lm)
+
     week_string = lm
     raw_data = pd.read_csv('/Users/trevorross/Desktop/My Projects/bettingatwork/raw_archives.csv')
     r2=raw_data.copy()
@@ -184,6 +184,7 @@ def agent_updates(w3,agents):
 
 # bulk function that injects new data into existing data and processes agent specific tasks
 def process_agents(w2,pyragt):
+
     w3 = w2.copy()
     pyragt.set_index('Player',inplace=True)
 
@@ -260,6 +261,8 @@ def process_agents(w2,pyragt):
             k_message = f"cole's guy (kaufman) owes {k_bal}"
         else:
             k_message = f"cole's guy (kaufman) is due {k_bal}"
+    else:
+        k_message = "cole's guy (kaufman) didn't bet this week"
         
 
 
@@ -313,9 +316,39 @@ def process_totals(w4):
 
 #function to determine settlement transactions amongst agents
 def inter_bookie(tdf):
+    td2 = tdf.copy()
+    print(td2)
+    print()
+    print("calculating splits")
+    print()
+    week_earnings = td2.Amount.sum()
+    try:
+        if week_earnings > 1000:
+            print(' weekly criteria met')
+            if td2.Amount.any() > (week_earnings * .75):
+                winner = td2.sort_values("Amount",ascending=False).index[0]
+                print(f"    {winner} had a good week")
+                if td2.loc[winner]["Num. Players"] > td2["Num. Players"].any():
+                    print(f"    player count criteria met")
+                    print()
+                    for_keeps = td2.Amount.sum() * .1
+                    print(f"{winner} gets an extra {for_keeps}")
+                    tdf.Amount = tdf.Amount - (for_keeps / 3)
+                else:
+                    print(" player count not met")
+            else:
+                print(f"    it was a team effort")
+        else:
+            print(' rough week for the boys')
+          
+    except:
+        print("error calculating splits")
+    
+
     tdf['Demand'] = [tdf.iloc[x]['Final Balance']-tdf.iloc[x].Amount for x in tdf.reset_index().index]
     na = len(tdf) - 1
     td2 = tdf.sort_values('Demand')
+    
     while td2.Demand.any() >= 0.1:
         if abs(td2.iloc[0,3]) > abs(td2.iloc[na,3]):
             amt = abs(td2.iloc[na,3])
