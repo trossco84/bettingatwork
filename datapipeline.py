@@ -317,10 +317,9 @@ def process_totals(w4):
 #function to determine settlement transactions amongst agents
 def inter_bookie(tdf):
     td2 = tdf.copy()
-    print(td2)
     print()
     print("calculating splits")
-    print()
+    # print()
     week_earnings = td2.Amount.sum()
     try:
         if week_earnings > 1000:
@@ -344,7 +343,7 @@ def inter_bookie(tdf):
     except:
         print("error calculating splits")
     
-
+    print()
     tdf['Demand'] = [tdf.iloc[x]['Final Balance']-tdf.iloc[x].Amount for x in tdf.reset_index().index]
     na = len(tdf) - 1
     td2 = tdf.sort_values('Demand')
