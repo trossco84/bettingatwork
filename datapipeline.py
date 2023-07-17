@@ -335,11 +335,13 @@ def inter_bookie(tdf):
                         print(f"    player count criteria met")
                         print()
                         for_keeps = td2.Amount.sum() * .1
-                        print(f"{winner} gets an extra {for_keeps}")
-                        tdf.loc[pyr, 'Amount'] = tdf.loc[pyr, 'Amount'] - (for_keeps / 3)
+                        print(f"{winner} gets an extra {round(for_keeps*2/3,1)}")
+                        # tdf.loc[pyr, 'Amount'] = tdf.loc[pyr, 'Amount'] - (for_keeps / 3)
                         for pyr2 in list(td2.index):
                             if pyr2 != pyr:
                                 tdf.loc[pyr2, 'Final Balance'] = tdf.loc[pyr2, 'Final Balance'] - (for_keeps / 3)
+                            # else:
+                            #     tdf.loc[pyr2, 'Final Balance'] = tdf.loc[pyr2, 'Final Balance'] + (2 * for_keeps / 3)
                         print()
                     else:
                         print(" player count not met")
