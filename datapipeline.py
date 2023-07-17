@@ -320,23 +320,33 @@ def inter_bookie(tdf):
     print()
     print("calculating splits")
     # print()
+    team_eff = True
     week_earnings = td2.Amount.sum()
     try:
         if week_earnings > 1000:
             print(' weekly criteria met')
-            if td2.Amount.any() > (week_earnings * .75):
-                winner = td2.sort_values("Amount",ascending=False).index[0]
-                print(f"    {winner} had a good week")
-                if td2.loc[winner]["Num. Players"] > td2["Num. Players"].any():
-                    print(f"    player count criteria met")
-                    print()
-                    for_keeps = td2.Amount.sum() * .1
-                    print(f"{winner} gets an extra {for_keeps}")
-                    tdf.Amount = tdf.Amount - (for_keeps / 3)
-                else:
-                    print(" player count not met")
-            else:
+            for pyr in list(td2.index):
+                if td2.loc[pyr].Amount > (week_earnings * .75):
+                    team_eff = False
+                    # winner = td2.sort_values("Amount",ascending=False).index[0]
+                    winner = pyr
+                    print(f"    {winner} had a good week")
+                    if td2.loc[winner]["Num. Players"] != td2["Num. Players"].min():
+                        print(f"    player count criteria met")
+                        print()
+                        for_keeps = td2.Amount.sum() * .1
+                        print(f"{winner} gets an extra {for_keeps}")
+                        tdf.loc[pyr, 'Amount'] = tdf.loc[pyr, 'Amount'] - (for_keeps / 3)
+                        for pyr2 in list(td2.index):
+                            if pyr2 != pyr:
+                                tdf.loc[pyr2, 'Final Balance'] = tdf.loc[pyr2, 'Final Balance'] - (for_keeps / 3)
+                        print()
+                    else:
+                        print(" player count not met")
+            
+            if team_eff==True:
                 print(f"    it was a team effort")
+                
         else:
             print(' rough week for the boys')
           
@@ -348,7 +358,7 @@ def inter_bookie(tdf):
     na = len(tdf) - 1
     td2 = tdf.sort_values('Demand')
     
-    while td2.Demand.any() >= 0.1:
+    while td2.Demand.any() >= .1:
         if abs(td2.iloc[0,3]) > abs(td2.iloc[na,3]):
             amt = abs(td2.iloc[na,3])
             prntamt = round(amt,2)
