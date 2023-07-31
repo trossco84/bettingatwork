@@ -150,7 +150,7 @@ def adjust_amounts(w2):
                 f.write('0')
 
     #10% kickback for those greater than 1500
-    w2.Weekly = w2.Weekly.apply(lambda x: x*0.9 if x < -1000 else x)
+    # w2.Weekly = w2.Weekly.apply(lambda x: x*0.9 if x < -1000 else x)
 
     w2.reset_index(inplace=True)
     return w2
@@ -184,7 +184,12 @@ def agent_updates(w3,agents):
 
 # bulk function that injects new data into existing data and processes agent specific tasks
 def process_agents(w2,pyragt):
-
+    #last monday's string date
+    today = datetime.datetime.today() 
+    last_monday = today - datetime.timedelta(days=today.weekday(),weeks=1)
+    lm_string = str(last_monday.date())
+    
+    
     w3 = w2.copy()
     pyragt.set_index('Player',inplace=True)
 
@@ -264,9 +269,26 @@ def process_agents(w2,pyragt):
     else:
         k_message = "cole's guy (kaufman) didn't bet this week"
         
-
-
-
+        
+    #10% freeplay logic
+    # for pyr in w2.index:
+    #     if w2.loc[pyr].Weekly < -1000:
+    
+    freeplay_data = pd.read_csv('/Users/trevorross/Desktop/My Projects/bettingatwork/freeplaydata.csv')
+    weekly_fp = w3[w3.Weekly <= -1000][["Player","Name","Agent","Weekly"]]
+    weekly_fp.rename(columns={"Player":"Player ID",
+                              "Name":"Player Name",
+                              "Weekly":"Total Losses"}, inplace=True)
+    weekly_fp["Date"] = lm_string
+    weekly_fp.set_index("Date",inplace=True)
+    weekly_fp.reset_index(inplace=True)
+    weekly_fp["Freeplay Rule"] = "10%"
+    weekly_fp["Freeplay Amount"] = weekly_fp["Total Losses"].abs() * .1
+    
+    #updating raw archives
+    fp_new = freeplay_data.append(weekly_fp,ignore_index=True)
+    fp_new.to_csv('/Users/trevorross/Desktop/My Projects/bettingatwork/freeplaydata.csv',index=False)
+    
     #adding an action column
     w3['Action'] = ['Request' if x < 0 else 'Pay' for x in w3.Weekly]
     w3['Amount'] = [abs(x) for x in w3.Weekly]
@@ -284,10 +306,6 @@ def process_agents(w2,pyragt):
         print(agent_view)
         print()
 
-    #recording the weekly output
-    today = datetime.datetime.today() 
-    last_monday = today - datetime.timedelta(days=today.weekday(),weeks=1)
-    lm_string = str(last_monday.date())
     weekly_records_df.to_csv(f'/Users/trevorross/Desktop/My Projects/bettingatwork/weekly_outputs/{lm_string}.csv')
 
     update_master(weekly_records_df,lm_string)
@@ -298,7 +316,11 @@ def process_agents(w2,pyragt):
     print()
     print("Cole's Clients:")
     print(k_message)
-
+    print()
+    print("Freeplays:")
+    print(weekly_fp.groupby(["Agent","Player ID","Player Name"]).agg({"Total Losses":"sum","Freeplay Amount":"sum"}))
+    print()
+    
     return w4,pyragt
         
 # function to create totals and values for output

@@ -1,5 +1,5 @@
 Player,Name,Agent
-pyr101,DEMO,None
+pyr101,DEMO,Trev
 pyr102,James Mendel,Gabe
 pyr103,Jimmy,Gabe
 pyr104,Eric,Gabe
@@ -84,3 +84,6 @@ pyr183,Hal,Gabe
 pyr184,Reese,Gabe
 pyr185,Chris2,Gabe
 pyr188,Garrett,Trev
+pyr189,Ethan,Gabe
+pyr195,Test2,Trev
+pyr198,Dozer,Orso
