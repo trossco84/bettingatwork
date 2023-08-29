@@ -317,9 +317,10 @@ def process_agents(w2,pyragt):
     print("Cole's Clients:")
     print(k_message)
     print()
-    print("Freeplays:")
-    print(weekly_fp.groupby(["Agent","Player ID","Player Name"]).agg({"Total Losses":"sum","Freeplay Amount":"sum"}))
-    print()
+    if len(weekly_fp)>0:
+        print("Freeplays:")
+        print(weekly_fp.groupby(["Agent","Player ID","Player Name"]).agg({"Total Losses":"sum","Freeplay Amount":"sum"}))
+        print()
     
     return w4,pyragt
         
@@ -428,6 +429,7 @@ def weekly_processing(weekly_data,pyragt):
     totalsdf = process_totals(w4)
     print()
     inter_bookie(totalsdf)
+    print()
 
 #Code Starter
 if __name__ == "__main__":
