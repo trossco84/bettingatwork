@@ -238,10 +238,6 @@ def process_agents(w2,pyragt):
     
     if 'pyr107' in list(w3.Player):
         c_weekly = w3.set_index('Player').loc['pyr107'].Weekly
-    else:
-        c_weekly = 0
-        
-    if all_C >= 5:
         if c_weekly<0:
             c_giveback = -(c_weekly*.1)
             c_final =c_bal2+c_giveback
@@ -249,8 +245,25 @@ def process_agents(w2,pyragt):
             c_giveback=0
             c_final=c_bal2
     else:
-        c_final=c_bal2
-        c_giveback=0 
+        c_weekly = 0
+        if w3[w3['Player'].isin(c_accts)].Weekly.sum() > 0:
+            c_giveback = 50
+            c_final =c_bal2+c_giveback
+        else:
+            c_bal2 = c_bal*2
+            c_final = c_bal2
+            c_giveback=0
+        
+    # if all_C >= 5:
+    #     if c_weekly<0:
+    #         c_giveback = -(c_weekly*.1)
+    #         c_final =c_bal2+c_giveback
+    #     else:
+    #         c_giveback=50
+    #         c_final=c_bal2
+    # else:
+    #     c_final=c_bal2
+    #     c_giveback=0 
     
     c_logic = f'we each pay christian ${int(c_final/3)} total, ${int(c_bal2/3)} for kickbacks and ${int(c_giveback/3)} for 5+ active players'
 
