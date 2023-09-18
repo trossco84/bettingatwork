@@ -218,54 +218,65 @@ def process_agents(w2,pyragt):
     if acheck in yes:
         pyragt,agents = agent_updates(w3,agents)
 
-    #christian logic
-    all_C = 0
-    c_accts = ['pyr118','pyr123','pyr121','pyr122','pyr130','pyr150','pyr171']
-    c_bal = 0
-    if set(list(w3.Player)).isdisjoint(set(c_accts)) == False:
-        for acct in c_accts:
-            if acct in list(w3.Player):
-                all_C = all_C+1
-                weekly = w3.set_index('Player').loc[acct].Weekly
-                if weekly < 0:
-                    add = weekly * 0.1
-                    c_bal = c_bal+add
-
-
-    c_bal2 = int(abs(c_bal))
-    if c_bal2%3 >1:
-        c_bal2 = c_bal2 + 1
-    
-    if 'pyr107' in list(w3.Player):
-        c_weekly = w3.set_index('Player').loc['pyr107'].Weekly
-        if c_weekly<0:
-            c_giveback = -(c_weekly*.1)
-            c_final =c_bal2+c_giveback
+    #agent logic
+    christians_guys = ['pyr118','pyr123','pyr121','pyr122','pyr130','pyr150','pyr171','pyr200']
+    marks_guys = ['pyr191']
+    for sub_agent in ["christian","mark"]:
+        all_C = 0
+        if sub_agent == "christian":
+            c_accts = christians_guys
+            sub_id = "pyr107"
         else:
-            c_giveback=0
-            c_final=c_bal2
-    else:
-        c_weekly = 0
-        if w3[w3['Player'].isin(c_accts)].Weekly.sum() > 0:
-            c_giveback = 50
-            c_final =c_bal2+c_giveback
-        else:
-            c_bal2 = c_bal*2
-            c_final = c_bal2
-            c_giveback=0
+            c_accts = marks_guys
+            sub_id = "pyr136"
         
-    # if all_C >= 5:
-    #     if c_weekly<0:
-    #         c_giveback = -(c_weekly*.1)
-    #         c_final =c_bal2+c_giveback
-    #     else:
-    #         c_giveback=50
-    #         c_final=c_bal2
-    # else:
-    #     c_final=c_bal2
-    #     c_giveback=0 
-    
-    c_logic = f'we each pay christian ${int(c_final/3)} total, ${int(c_bal2/3)} for kickbacks and ${int(c_giveback/3)} for 5+ active players'
+        c_bal = 0
+        if set(list(w3.Player)).isdisjoint(set(c_accts)) == False:
+            for acct in c_accts:
+                if acct in list(w3.Player):
+                    all_C = all_C+1
+                    weekly = w3.set_index('Player').loc[acct].Weekly
+                    if weekly < 0:
+                        add = weekly * 0.1
+                        c_bal = c_bal+add
+
+
+        c_bal2 = int(abs(c_bal))
+        if c_bal2%3 >1:
+            c_bal2 = c_bal2 + 1
+        
+        if sub_id in list(w3.Player):
+            c_weekly = w3.set_index('Player').loc[sub_id].Weekly
+            if c_weekly<0:
+                c_giveback = -(c_weekly*.1)
+                c_final =c_bal2+c_giveback
+            else:
+                c_giveback=0
+                c_final=c_bal2
+        else:
+            c_weekly = 0
+            if w3[w3['Player'].isin(c_accts)].Weekly.sum() > 0:
+                c_giveback = 50
+                c_final =c_bal2+c_giveback
+            else:
+                c_bal2 = c_bal*2
+                c_final = c_bal2
+                c_giveback=0
+            
+        # if all_C >= 5:
+        #     if c_weekly<0:
+        #         c_giveback = -(c_weekly*.1)
+        #         c_final =c_bal2+c_giveback
+        #     else:
+        #         c_giveback=50
+        #         c_final=c_bal2
+        # else:
+        #     c_final=c_bal2
+        #     c_giveback=0 
+        if sub_agent == "christian":
+            c_logic = f'we each pay {sub_agent} ${int(c_final/3)} total, ${int(c_bal2/3)} for kickbacks and ${int(c_giveback/3)} for 5+ active players'
+        else:
+            m_logic = f'we each pay {sub_agent} ${int(c_final/3)} total, ${int(c_bal2/3)} for kickbacks and ${int(c_giveback/3)} for 5+ active players'
 
     #cole/kaufman logic
     if 'pyr160' in list(w3.Player):
@@ -324,8 +335,9 @@ def process_agents(w2,pyragt):
     update_master(weekly_records_df,lm_string)
 
     print()
-    print('Christian:')
+    print("Sub Agents")
     print(c_logic)
+    print(m_logic)
     print()
     print("Cole's Clients:")
     print(k_message)
@@ -416,17 +428,18 @@ def inter_bookie(tdf):
             break
 
 #new site, all action, data translation layer
-def newsite_datatranslation(weekly_balances):
-    allaction_wb = weekly_balances.copy()
+def newsite_datatranslation(new_site_data):
     p_a = pd.read_csv('/Users/trevorross/Desktop/My Projects/bettingatwork/players_and_agents.csv')
     p_dict = p_a[['Player','Name']]
     
-    red_aa_wb = allaction_wb[['Player','Balance']]
-    red_aa_wb.Player = [pyr.lower() for pyr in red_aa_wb.Player]
-    red_aa_wb.rename(columns={"Balance":"Weekly"},inplace=True)
-    
-    updated_wb = pd.merge(left=red_aa_wb,right=p_dict,how="left",on="Player")
-    return updated_wb
+    nsd2 = new_site_data[['Customer','Week']]
+    nsd2['Player'] = [pyr.lower() for pyr in nsd2.Customer]
+    nsd2.rename(columns={"Week":"Weekly"},inplace=True)
+    nsd2.drop('Customer',axis=1,inplace=True)
+    # nsd2["Balance"] = nsd2.Balance.astype(float)
+    ready_data = pd.merge(left=nsd2,right=p_dict,how="left",on="Player")
+    print(ready_data.head())
+    return ready_data
 
 #Process Runner
 def weekly_processing(weekly_data,pyragt):
