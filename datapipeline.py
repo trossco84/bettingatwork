@@ -438,7 +438,7 @@ def newsite_datatranslation(new_site_data):
     nsd2.drop('Customer',axis=1,inplace=True)
     # nsd2["Balance"] = nsd2.Balance.astype(float)
     ready_data = pd.merge(left=nsd2,right=p_dict,how="left",on="Player")
-    print(ready_data.head())
+    # print(ready_data.head())
     return ready_data
 
 #Process Runner
