@@ -219,7 +219,7 @@ def process_agents(w2,pyragt):
         pyragt,agents = agent_updates(w3,agents)
 
     #agent logic
-    christians_guys = ['pyr118','pyr123','pyr121','pyr122','pyr130','pyr150','pyr171','pyr200']
+    christians_guys = ['pyr118','pyr123','pyr121','pyr122','pyr130','pyr150','pyr171','pyr183','pyr200']
     marks_guys = ['pyr191']
     for sub_agent in ["christian","mark"]:
         all_C = 0
@@ -241,24 +241,35 @@ def process_agents(w2,pyragt):
                         c_bal = c_bal+add
 
 
+        # automatically give 10% kickbacks
         c_bal2 = int(abs(c_bal))
         if c_bal2%3 >1:
             c_bal2 = c_bal2 + 1
         
+        # if they bet
         if sub_id in list(w3.Player):
             c_weekly = w3.set_index('Player').loc[sub_id].Weekly
+            
+            # and if they lost
             if c_weekly<0:
+                # they get another 10%
                 c_giveback = -(c_weekly*.1)
                 c_final =c_bal2+c_giveback
             else:
                 c_giveback=0
                 c_final=c_bal2
+        
+        # if they didn't bet
         else:
             c_weekly = 0
+            
+            # if their players went up
             if w3[w3['Player'].isin(c_accts)].Weekly.sum() > 0:
+                # they get 50 bucks flat for collecting
                 c_giveback = 50
                 c_final =c_bal2+c_giveback
             else:
+                # otherwise they get 20% kickbacks 
                 c_bal2 = c_bal*2
                 c_final = c_bal2
                 c_giveback=0
@@ -299,15 +310,15 @@ def process_agents(w2,pyragt):
     #     if w2.loc[pyr].Weekly < -1000:
     
     freeplay_data = pd.read_csv('/Users/trevorross/Desktop/My Projects/bettingatwork/freeplaydata.csv')
-    weekly_fp = w3[w3.Weekly <= -1000][["Player","Name","Agent","Weekly"]]
+    weekly_fp = w3[w3.Weekly <= -500][["Player","Name","Agent","Weekly"]]
     weekly_fp.rename(columns={"Player":"Player ID",
                               "Name":"Player Name",
                               "Weekly":"Total Losses"}, inplace=True)
     weekly_fp["Date"] = lm_string
     weekly_fp.set_index("Date",inplace=True)
     weekly_fp.reset_index(inplace=True)
-    weekly_fp["Freeplay Rule"] = "10%"
-    weekly_fp["Freeplay Amount"] = weekly_fp["Total Losses"].abs() * .1
+    weekly_fp["Freeplay Rule"] = "20%"
+    weekly_fp["Freeplay Amount"] = weekly_fp["Total Losses"].abs() * .2
     
     #updating raw archives
     fp_new = freeplay_data.append(weekly_fp,ignore_index=True)
@@ -371,25 +382,28 @@ def inter_bookie(tdf):
     team_eff = True
     week_earnings = td2.Amount.sum()
     try:
+        # If we make more than 1K in a week
         if week_earnings > 1000:
             print(' weekly criteria met')
+            
+            # Check if any agents accounted for > 75% of winnings
             for pyr in list(td2.index):
                 if td2.loc[pyr].Amount > (week_earnings * .75):
                     team_eff = False
-                    # winner = td2.sort_values("Amount",ascending=False).index[0]
                     winner = pyr
                     print(f"    {winner} had a good week")
+                    
+                    # Make sure they don't have the lowest # of players
                     if td2.loc[winner]["Num. Players"] != td2["Num. Players"].min():
                         print(f"    player count criteria met")
                         print()
+                        
+                        # They get a 40% split for that week (other players get 30%)
                         for_keeps = td2.Amount.sum() * .1
                         print(f"{winner} gets an extra {round(for_keeps*2/3,1)}")
-                        # tdf.loc[pyr, 'Amount'] = tdf.loc[pyr, 'Amount'] - (for_keeps / 3)
                         for pyr2 in list(td2.index):
                             if pyr2 != pyr:
                                 tdf.loc[pyr2, 'Final Balance'] = tdf.loc[pyr2, 'Final Balance'] - (for_keeps / 3)
-                            # else:
-                            #     tdf.loc[pyr2, 'Final Balance'] = tdf.loc[pyr2, 'Final Balance'] + (2 * for_keeps / 3)
                         print()
                     else:
                         print(" player count not met")
