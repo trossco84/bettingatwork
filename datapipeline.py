@@ -230,6 +230,8 @@ def process_agents(w2,pyragt):
             c_accts = marks_guys
             sub_id = "pyr136"
         
+        # count number of players
+        # add 10% kickbacks for negative players
         c_bal = 0
         if set(list(w3.Player)).isdisjoint(set(c_accts)) == False:
             for acct in c_accts:
