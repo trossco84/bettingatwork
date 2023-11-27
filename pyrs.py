@@ -4,7 +4,8 @@ from pandas.core.base import DataError
 
 
 player_data = pd.read_csv('/Users/trevorross/Desktop/My Projects/bettingatwork/players_and_agents.csv')
-
+player_data.head()
+player_data[player_data["Name"]=="OPEN"]
 
 def retrieve_players(player_data):
     pyrs = player_data.copy()
