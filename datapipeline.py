@@ -292,19 +292,19 @@ def process_agents(w2,pyragt):
             m_logic = f'we each pay {sub_agent} ${int(c_final/3)} total, ${int(c_bal2/3)} for kickbacks and ${int(c_giveback/3)} for 5+ active players'
 
     #cole/kaufman logic
-    if 'pyr160' in list(w3.Player):
-        k_bal = w3.set_index('Player').loc['pyr160'].Weekly
+    # if 'pyr160' in list(w3.Player):
+    #     k_bal = w3.set_index('Player').loc['pyr160'].Weekly
         
-        w3.set_index('Player',inplace = True)
-        w3.Weekly.pyr160 = 0
-        w3.reset_index(inplace = True)
+    #     w3.set_index('Player',inplace = True)
+    #     w3.Weekly.pyr160 = 0
+    #     w3.reset_index(inplace = True)
         
-        if k_bal < 0: 
-            k_message = f"cole's guy (kaufman) owes {k_bal}"
-        else:
-            k_message = f"cole's guy (kaufman) is due {k_bal}"
-    else:
-        k_message = "cole's guy (kaufman) didn't bet this week"
+    #     if k_bal < 0: 
+    #         k_message = f"cole's guy (kaufman) owes {k_bal}"
+    #     else:
+    #         k_message = f"cole's guy (kaufman) is due {k_bal}"
+    # else:
+    #     k_message = "cole's guy (kaufman) didn't bet this week"
         
         
     #10% freeplay logic
@@ -352,9 +352,9 @@ def process_agents(w2,pyragt):
     print(c_logic)
     print(m_logic)
     print()
-    print("Cole's Clients:")
-    print(k_message)
-    print()
+    # print("Cole's Clients:")
+    # print(k_message)
+    # print()
     if len(weekly_fp)>0:
         print("Freeplays:")
         print(weekly_fp.groupby(["Agent","Player ID","Player Name"]).agg({"Total Losses":"sum","Freeplay Amount":"sum"}))
