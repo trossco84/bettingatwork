@@ -1,0 +1,40 @@
+Agent,Player,Name,Action,Amount
+Trev,pyr105,Riceman,Pay,260.0
+Trev,pyr116,stew,Pay,121.0
+Trev,pyr117,goldman,Pay,489.0
+Trev,pyr125,Noah,Pay,33.0
+Trev,pyr133,NebBaldwin,Pay,0.0
+Trev,pyr149,ike baldwin,Request,62.0
+Trev,pyr152,Vic,Pay,0.0
+Orso,pyr107,Christian,Request,580.0
+Orso,pyr109,Kevin Victory,Pay,594.0
+Orso,pyr111,RyanVictory,Request,78.0
+Orso,pyr114,Kyle Beta,Pay,100.0
+Orso,pyr122,Christian #5,Pay,15.0
+Orso,pyr130,Christian # 3,Pay,385.0
+Orso,pyr153,Tee,Pay,5403.0
+Orso,pyr163,Chuck,Request,56.0
+Orso,pyr167,GZ,Pay,2253.0
+Orso,pyr168,Bean,Request,198.0
+Orso,pyr181,Jack (Jayce),Pay,560.0
+Orso,pyr183,Christian #8,Request,210.0
+Orso,pyr190,Jayce,Pay,212.0
+Orso,pyr193,Tiger,Pay,62.0
+Orso,pyr196,ScottKevinsBoy,Request,7.0
+Orso,pyr198,Dozer,Pay,883.0
+Gabe,pyr113,Rick,Request,530.0
+Gabe,pyr115,Tim,Request,15.0
+Gabe,pyr119,DavidTylersDad,Pay,253.0
+Gabe,pyr126,Roby,Request,2021.0
+Gabe,pyr128,TylerL,Pay,0.0
+Gabe,pyr132,Connor,Request,295.0
+Gabe,pyr134,Kevin,Pay,1481.0
+Gabe,pyr140,Pat,Pay,122.0
+Gabe,pyr155,Tyler,Pay,73.0
+Gabe,pyr156,Quentin,Request,425.0
+Gabe,pyr165,JakeL,Request,25.0
+Gabe,pyr166,DylanT,Request,137.0
+Gabe,pyr182,Manny,Request,14.0
+Gabe,pyr187,KevinGabe,Pay,677.0
+Gabe,pyr191,Marks #1,Pay,294.0
+Gabe,pyr195,DanielB,Request,181.0
